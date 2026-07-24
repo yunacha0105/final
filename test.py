@@ -15,24 +15,27 @@ def play_round(question_list):
     return score, wrong
 
 
-# 첫 도전
-remaining = random.sample(questions, 3)
-total_count = len(remaining)
-total_score = 0
+def test():
+    total_score = 0
+    total_count = 0
+    wrong = []
 
-score, wrong = play_round(remaining)
-total_score += score
-result(total_score, total_count)   # ← 여기서 "맞춘 개수 + 등급" 둘 다 출력됨
+    while True:
+        if wrong:
+            print(f'\n틀린 {len(wrong)}문제 재도전합니다.\n')
+            round_questions = wrong
+        else:
+            print('\n새 문제 3개를 출제합니다.\n')
+            round_questions = random.sample(questions, 3)
 
-# 재도전 (틀린 문제만)
-while wrong:
-    retry = input('\n틀린 문제 다시 풀어보시겠습니까? (y/n): ')
-    if retry.strip().lower() != 'y':
-        break
+        round_score, wrong = play_round(round_questions)
+        total_score += round_score
+        total_count += len(round_questions)
 
-    print(f'\n틀린 {len(wrong)}문제 재도전합니다.\n')
-    score, wrong = play_round(wrong)
-    total_score += score
-    result(total_score, total_count)
+        result(total_score, total_count)
 
-print('\n게임을 종료합니다.')
+        retry = input('\n다시 풀어보시겠습니까? (y/n): ')
+        if retry.strip().lower() != 'y':
+            break
+
+    print('\n게임을 종료합니다.')
